@@ -9,7 +9,13 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="icon" type="image/png" href="fav.png">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1024,8 +1030,8 @@
                 class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
             <h2 class="text-2xl font-bold text-white mb-4">AICraft Writer Demo</h2>
             <div class="aspect-w-16 aspect-h-9">
-                <iframe class="rounded-lg w-full h-full" src="https://www.youtube.com/embed/g-g-9-sF4pM?si=G-L3s-e-G-c-s-E"
-                    frameborder="0"
+                <iframe class="rounded-lg w-full h-full"
+                    src="https://www.youtube.com/embed/g-g-9-sF4pM?si=G-L3s-e-G-c-s-E" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
             </div>
@@ -1033,7 +1039,8 @@
     </div>
 
     <!-- Template Modal (existing) -->
-    <div id="templateModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden p-4">
+    <div id="templateModal"
+        class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden p-4">
         <div class="bg-slate-800 rounded-lg p-6 max-w-3xl w-full m-4 relative shadow-2xl glassmorphism">
             <div class="flex justify-between items-center mb-4">
                 <h2 id="templateModalTitle" class="text-2xl font-bold text-white">Browse Templates</h2>
@@ -1101,7 +1108,7 @@
         let currentUserId = null;
         let currentUserEmail = null;
         let currentUserPlan = null;
-        
+
 
         // --- DOM Elements ---
         const signInBtn = document.getElementById('signInBtn');
@@ -1244,7 +1251,7 @@
             }
             auth = getAuth(authApp);
             analytics = getAnalytics(authApp);
-            authDb = getFirestore(authApp); 
+            authDb = getFirestore(authApp);
 
             // Init Review App (Named) - Only for reviews
             let reviewAppInstanceExists = getApps().some(app => app.name === 'reviewApp');
@@ -1313,10 +1320,10 @@
 
                     // HIDE profile container, SHOW sign-in button
                     if (signInButton) {
-                        signInButton.classList.remove('hidden'); 
+                        signInButton.classList.remove('hidden');
                         signInButton.classList.add('md:block'); // FIX: Ensure display class is present when logged out
                     }
-                    if (profileContainer) profileContainer.classList.add('hidden'); 
+                    if (profileContainer) profileContainer.classList.add('hidden');
 
                     if (userEmailDisplay) userEmailDisplay.textContent = '...';
 
@@ -1326,7 +1333,7 @@
                     if (reviewLoginPrompt) reviewLoginPrompt.classList.remove('hidden');
 
                     if (generateBtn) generateContentBtn.disabled = true; // Still require login to generate
-                    if (loginPrompt) loginPrompt.classList.remove('hidden'); 
+                    if (loginPrompt) loginPrompt.classList.remove('hidden');
                     if (generatedContentWrapper) generatedContentWrapper.classList.add('hidden');
                 }
             });
@@ -1429,21 +1436,21 @@
             const contentDiv = document.getElementById('policyModalContent');
             const sourceDivId = type === 'terms' ? 'terms-of-service-content' : type === 'privacy' ? 'privacy-policy-content' : 'about-content';
             const sourceDiv = document.getElementById(sourceDivId);
-            
+
             if (contentDiv && sourceDiv) {
                 // Ensure content is hidden first (already handled by the HTML structure)
-                
+
                 // Clone content and adjust classes for display
                 const contentClone = sourceDiv.cloneNode(true);
                 contentClone.removeAttribute('id'); // Remove ID to prevent duplicates
-                contentClone.classList.remove('hidden'); 
+                contentClone.classList.remove('hidden');
                 // Remove layout/background styling classes that shouldn't be in the modal view
-                contentClone.classList.remove('p-6', 'mt-8', 'rounded-lg', 'bg-slate-800/50'); 
+                contentClone.classList.remove('p-6', 'mt-8', 'rounded-lg', 'bg-slate-800/50');
                 contentClone.classList.add('text-left');
-                
+
                 contentDiv.innerHTML = '';
                 contentDiv.appendChild(contentClone);
-                
+
                 // Show modal
                 modal.style.display = 'flex';
             }
@@ -1770,7 +1777,7 @@
                             },
                             body: JSON.stringify(payload)
                         });
-                        const result = await response.json(); 
+                        const result = await response.json();
 
                         console.log("API response:", result); // For debugging
 
@@ -1889,4 +1896,3 @@
 </body>
 
 </html>
-
