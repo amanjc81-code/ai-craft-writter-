@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Corrected from UTF-m-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | AICraft Writer</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles (matching index.html) -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0F1F; /* Deep blue background */
+            color: #E0E0E0;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #8A2BE2, #4A90E2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(90deg, #8A2BE2, #4A90E2);
+        }
+        .secondary-btn {
+            background-color: transparent;
+            border: 1px solid #4A90E2;
+            color: #4A90E2;
+        }
+        .secondary-btn:hover {
+            background-color: #4A90E2;
+            color: #fff;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .auth-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding-right: 2.75rem; /* Add padding for the icon */
+        }
+        .auth-input::placeholder {
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="max-w-md w-full p-8 rounded-xl glassmorphism space-y-6">
+            
+            <!-- Header -->
+            <div class="text-center">
+                <h1 class="text-3xl font-bold text-white">
+                    AICraft<span class="gradient-text">Writer</span>
+                </h1>
+                <h2 id="auth-title" class="mt-2 text-2xl font-bold text-white">
+                    Welcome Back
+                </h2>
+                <p class="text-gray-400">Sign in to continue to your account.</p>
+            </div>
+
+            <!-- Toggle Buttons -->
+            <div class="flex border border-gray-700 rounded-lg p-1">
+                <button id="login-tab" class="w-1/2 py-2 rounded-md text-white font-semibold transition gradient-bg">
+                    Login
+                </button>
+                <button id="register-tab" class="w-1/2 py-2 rounded-md text-gray-400 font-semibold transition">
+                    Register
+                </button>
+            </div>
+
+            <!-- Auth Form -->
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label for="email" class="sr-only">Email</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                           class="w-full px-4 py-3 rounded-lg auth-input focus:outline-none focus:ring-2 focus:ring-purple-500"
+                           placeholder="Email address">
+                </div>
+                <div class="relative"> <!-- Make container relative -->
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                           class="w-full px-4 py-3 rounded-lg auth-input focus:outline-none focus:ring-2 focus:ring-purple-500"
+                           placeholder="Password">
+                    <!-- Toggle Button -->
+                    <button type="button" id="toggle-password" class="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-white">
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7 9.542-7 1.488 0 2.89.39 4.125 1.054M16.5 16.5l-1.4-1.4M18 12c0-3.314-2.686-6-6-6a6.002 6.002 0 00-1.79.324M3 3l3.5 3.5m0 0a3.001 3.001 0 004.242 4.242M6.5 6.5L3 3m18 18l-3.5-3.5M17.5 17.5l3.5 3.5" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="confirm-password-group" class="hidden relative"> <!-- Make container relative -->
+                    <label for="confirm-password" class="sr-only">Confirm Password</label>
+                    <input id="confirm-password" name="confirm-password" type="password"
+                           class="w-full px-4 py-3 rounded-lg auth-input focus:outline-none focus:ring-2 focus:ring-purple-500"
+                           placeholder="Confirm Password">
+                    <!-- Toggle Button -->
+                    <button type="button" id="toggle-confirm-password" class="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-white">
+                        <svg id="confirm-eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg id="confirm-eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7 9.542-7 1.488 0 2.89.39 4.125 1.054M16.5 16.5l-1.4-1.4M18 12c0-3.314-2.686-6-6-6a6.002 6.002 0 00-1.79.324M3 3l3.5 3.5m0 0a3.001 3.001 0 004.242 4.242M6.5 6.5L3 3m18 18l-3.5-3.5M17.5 17.5l3.5 3.5" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="text-right">
+                    <a href="#" id="forgot-password" class="text-sm font-medium text-blue-400 hover:text-blue-300">
+                        Forgot password?
+                    </a>
+                </div>
+
+                <!-- Error Message Area -->
+                <p id="auth-error" class="text-red-400 text-sm text-center"></p>
+
+                <div>
+                    <button id="auth-button" type="submit"
+                            class="w-full py-3 px-4 rounded-lg font-bold text-white gradient-bg hover:opacity-90 transition transform hover:scale-105">
+                        Sign In
+                    </button>
+                </div>
+            </form>
+
+            <!-- Divider -->
+            <div class="flex items-center justify-center space-x-2">
+                <span class="h-px w-full bg-gray-700"></span>
+                <span class="text-gray-500 text-sm">OR</span>
+                <span class="h-px w-full bg-gray-700"></span>
+            </div>
+
+            <!-- Social Login -->
+            <div>
+                <button id="google-signin"
+                        class="w-full py-3 px-4 rounded-lg font-semibold secondary-btn hover:text-white transition flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.19 4.11-4.11 5.411l6.19 5.238C39.901 36.636 44 31.125 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+                    Sign in with Google
+                </button>
+            </div>
+
+            <!-- Link back to landing page -->
+            <div class="text-center mt-4">
+                 <a href="index.html" class="text-sm font-medium text-blue-400 hover:text-blue-300">
+                     &larr; Back to Home
+                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPDATED Firebase Script Section -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"; // Use consistent version
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js"; // Use consistent version
+        import { 
+            getAuth, 
+            setPersistence,
+            browserSessionPersistence,
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword,
+            GoogleAuthProvider, 
+            signInWithPopup,
+            sendPasswordResetEmail,
+            onAuthStateChanged,
+            signInAnonymously, // Keep existing auth imports
+            signInWithCustomToken // Keep existing auth imports
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"; // Use consistent version
+        
+        // --- Firebase Configuration ---
+        // Using the config you provided
+        let app, auth, analytics;
+        let currentUserId = null;
+
+        try {
+            // Your web app's Firebase configuration (from your input)
+            const firebaseConfig = {
+                apiKey: "AIzaSyCByw4enF25yakEeCeUM1l_yEUBYn2kaAg",
+                authDomain: "aicraftwritter-login-page.firebaseapp.com",
+                projectId: "aicraftwritter-login-page",
+                storageBucket: "aicraftwritter-login-page.firebasestorage.app", // Corrected bucket name
+                messagingSenderId: "523573634127",
+                appId: "1:523573634127:web:34257bca4ef33bf791363a",
+                measurementId: "G-5L6MM85YT1"
+            };
+
+            // Initialize Firebase App, Auth, and Analytics
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            analytics = getAnalytics(app); // Initialize Analytics
+            
+            // This listener manages the user's session
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in.
+                    currentUserId = user.uid;
+                    console.log("User is signed in:", user);
+                    // On successful login, redirect to the main page.
+                    const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+                    window.location.href = baseUrl + 'index.html';
+                } else {
+                    // User is signed out.
+                    currentUserId = null;
+                    console.log("User is signed out.");
+                }
+            });
+
+            // Handle initial auth token if provided
+            /*
+            REMOVED: This block is for the platform's integrated Firebase project.
+            Since you provided your own firebaseConfig, this custom token (`__initial_auth_token`)
+            is invalid for *your* project and causes the 'auth/configuration-not-found' error.
+            Users will now log in using your project's user accounts via the form.
+
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                 console.log("Attempting sign in with custom token...");
+                 await setPersistence(auth, browserSessionPersistence);
+                 await signInWithCustomToken(auth, __initial_auth_token);
+                 console.log("Signed in with custom token.");
+            } else {
+            */
+                // If no token, we are on the login page, so we just wait for user action.
+                console.log("No initial auth token. Waiting for user login.");
+            /*
+            }
+            */
+
+        } catch (e) {
+            console.error("Firebase initialization error:", e);
+            const authErrorElement = document.getElementById('auth-error');
+            if (authErrorElement) {
+                authErrorElement.textContent = "Error loading app. Please refresh.";
+            }
+        }
+        
+        // --- DOM Elements ---
+        const authForm = document.getElementById('auth-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordGroup = document.getElementById('confirm-password-group');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const authTitle = document.getElementById('auth-title');
+        const authButton = document.getElementById('auth-button');
+        const googleSignInBtn = document.getElementById('google-signin');
+        const forgotPasswordLink = document.getElementById('forgot-password');
+        const authError = document.getElementById('auth-error');
+
+        let isLoginMode = true;
+
+        // --- NEW: Password Toggle Logic ---
+        function setupPasswordToggle(toggleBtnId, inputId, eyeIconId, eyeSlashIconId) {
+            const toggleBtn = document.getElementById(toggleBtnId);
+            const input = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(eyeIconId);
+            const eyeSlashIcon = document.getElementById(eyeSlashIconId);
+
+            if (toggleBtn && input && eyeIcon && eyeSlashIcon) {
+                toggleBtn.addEventListener('click', () => {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        eyeIcon.classList.add('hidden');
+                        eyeSlashIcon.classList.remove('hidden');
+                    } else {
+                        input.type = 'password';
+                        eyeIcon.classList.remove('hidden');
+                        eyeSlashIcon.classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        setupPasswordToggle('toggle-password', 'password', 'eye-icon', 'eye-slash-icon');
+        setupPasswordToggle('toggle-confirm-password', 'confirm-password', 'confirm-eye-icon', 'confirm-eye-slash-icon');
+
+        // --- Toggle Logic ---
+        function setMode(isLogin) {
+            isLoginMode = isLogin;
+            if(authError) authError.textContent = ''; // Clear errors
+            
+            if (isLogin) {
+                loginTab.classList.add('gradient-bg', 'text-white');
+                loginTab.classList.remove('text-gray-400');
+                registerTab.classList.remove('gradient-bg', 'text-white');
+                registerTab.classList.add('text-gray-400');
+                
+                authTitle.textContent = 'Welcome Back';
+                authButton.textContent = 'Sign In';
+                confirmPasswordGroup.classList.add('hidden');
+                forgotPasswordLink.classList.remove('hidden');
+                
+            } else {
+                registerTab.classList.add('gradient-bg', 'text-white');
+                registerTab.classList.remove('text-gray-400');
+                loginTab.classList.remove('gradient-bg', 'text-white');
+                loginTab.classList.add('text-gray-400');
+                
+                authTitle.textContent = 'Create Account';
+                authButton.textContent = 'Sign Up';
+                confirmPasswordGroup.classList.remove('hidden');
+                forgotPasswordLink.classList.add('hidden');
+            }
+        }
+
+        if(loginTab && registerTab) {
+            loginTab.addEventListener('click', () => setMode(true));
+            registerTab.addEventListener('click', () => setMode(false));
+        }
+
+        // --- Auth Handlers ---
+
+        // Handle Email/Password Login or Registration
+        if(authForm) {
+            authForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if(authError) authError.textContent = '';
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                try {
+                    if (isLoginMode) {
+                        // --- Sign In ---
+                        await signInWithEmailAndPassword(auth, email, password);
+                        // onAuthStateChanged will handle the redirect
+                        console.log('Login successful');
+                    } else {
+                        // --- Register ---
+                        if (password !== confirmPasswordInput.value) {
+                           if(authError) authError.textContent = 'Passwords do not match.';
+                            return;
+                        }
+                        if (password.length < 6) {
+                            if(authError) authError.textContent = 'Password must be at least 6 characters.';
+                            return;
+                        }
+                        await createUserWithEmailAndPassword(auth, email, password);
+                        // onAuthStateChanged will handle the redirect
+                        console.log('Registration successful');
+                    }
+                } catch (error) {
+                    console.error("Auth error:", error);
+                     if(authError) authError.textContent = getFriendlyErrorMessage(error.code);
+                }
+            });
+        }
+
+        // Handle Google Sign-In
+        if(googleSignInBtn) {
+            googleSignInBtn.addEventListener('click', async () => {
+                if(authError) authError.textContent = '';
+                const provider = new GoogleAuthProvider();
+                try {
+                    await signInWithPopup(auth, provider);
+                    // onAuthStateChanged will handle the redirect
+                    console.log('Google Sign-In successful');
+                } catch (error) {
+                    console.error("Google Sign-In error:", error);
+                    if(authError) authError.textContent = getFriendlyErrorMessage(error.code);
+                }
+            });
+        }
+
+        // Handle Forgot Password
+        if(forgotPasswordLink) {
+            forgotPasswordLink.addEventListener('click', async (e) => {
+                e.preventDefault();
+                 if(authError) authError.textContent = '';
+                const email = emailInput.value;
+                if (!email) {
+                     if(authError) authError.textContent = 'Please enter your email address to reset password.';
+                    return;
+                }
+
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    if(authError) authError.textContent = 'Password reset email sent. Check your inbox.';
+                } catch (error) {
+                    console.error("Password reset error:", error);
+                    if(authError) authError.textContent = getFriendlyErrorMessage(error.code);
+                }
+            });
+        }
+
+        // --- Utility Function ---
+        function getFriendlyErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/invalid-email':
+                    return 'Please enter a valid email address.';
+                case 'auth/user-not-found':
+                case 'auth/invalid-credential': // More common error for wrong email/password combo
+                    return 'Incorrect email or password.';
+                case 'auth/wrong-password':
+                    return 'Incorrect password. Please try again.';
+                case 'auth/email-already-in-use':
+                    return 'This email is already registered. Please log in.';
+                case 'auth/weak-password':
+                    return 'Password must be at least 6 characters long.';
+                case 'auth/popup-closed-by-user':
+                case 'auth/cancelled-popup-request':
+                    return 'Sign-in window closed. Please try again.';
+                case 'auth/network-request-failed':
+                    return 'Network error. Please check your connection.';
+                default:
+                    return `An error occurred (${errorCode}). Please try again.`;
+            }
+        }
+
+    </script>
+</body>
+</html>
+

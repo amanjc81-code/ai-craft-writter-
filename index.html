@@ -1,0 +1,1891 @@
+<!DOCTYPE html>I
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AICraft Writer | Create Content 10x Faster with AI</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="icon" type="image/png" href="assets/fav.png">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Marked.js for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0F1F;
+            /* Deep blue background */
+            color: #E0E0E0;
+            /* Light text color */
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8A2BE2, #4A90E2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(90deg, #8A2BE2, #4A90E2);
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            border: 1px solid #4A90E2;
+            color: #4A90E2;
+        }
+
+        .secondary-btn:hover {
+            background-color: #4A90E2;
+            color: #fff;
+        }
+
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scroll-animation {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .scroll-animation.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typing animation */
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #4A90E2;
+            }
+        }
+
+        .typing-effect p {
+            overflow: hidden;
+            border-right: .15em solid #4A90E2;
+            white-space: nowrap;
+            margin: 0;
+            animation:
+                typing 3.5s steps(80, end) forwards,
+                blink-caret .75s step-end infinite;
+        }
+
+        #animated-prompt-target {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* --- Generated Content Styling --- */
+        #generatedContentOutput {
+            white-space: normal;
+            /* Allow text to wrap */
+        }
+
+        #generatedContentOutput h1,
+        #generatedContentOutput h2,
+        #generatedContentOutput h3 {
+            font-size: 1.25rem;
+            /* 20px */
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-top: 1.25rem;
+            /* 20px */
+            margin-bottom: 0.5rem;
+            /* 8px */
+            border-bottom: 1px solid #374151;
+            /* gray-700 */
+            padding-bottom: 0.25rem;
+            /* 4px */
+        }
+
+        #generatedContentOutput h1:first-child,
+        #generatedContentOutput h2:first-child,
+        #generatedContentOutput h3:first-child {
+            margin-top: 0;
+        }
+
+        #generatedContentOutput p {
+            margin-bottom: 1rem;
+            /* 16px */
+            line-height: 1.6;
+        }
+
+        #generatedContentOutput ul,
+        #generatedContentOutput ol {
+            margin-left: 1.5rem;
+            /* 24px */
+            margin-bottom: 1rem;
+            /* 16px */
+            list-style-position: outside;
+        }
+
+        #generatedContentOutput ul {
+            list-style-type: disc;
+        }
+
+        #generatedContentOutput ol {
+            list-style-type: decimal;
+        }
+
+        #generatedContentOutput li {
+            margin-bottom: 0.5rem;
+            /* 8px */
+        }
+
+        #generatedContentOutput strong,
+        #generatedContentOutput b {
+            font-weight: 600;
+            color: #E5E7EB;
+            /* gray-200 */
+        }
+
+        #generatedContentOutput em,
+        #generatedContentOutput i {
+            font-style: italic;
+            color: #D1D5DB;
+            /* gray-300 */
+        }
+
+        #generatedContentOutput code {
+            background-color: #1F2937;
+            /* gray-800 */
+            padding: 0.125rem 0.375rem;
+            /* 2px 6px */
+            border-radius: 0.25rem;
+            /* 4px */
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        #generatedContentOutput pre {
+            background-color: #1F2937;
+            /* gray-800 */
+            padding: 1rem;
+            /* 16px */
+            border-radius: 0.5rem;
+            /* 8px */
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        #generatedContentOutput pre code {
+            padding: 0;
+            background-color: transparent;
+        }
+
+        /* --- Template Modal Styling --- */
+        .template-item {
+            position: relative;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* All templates are now free, so this hover applies to all */
+        .template-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #8A2BE2;
+            transform: translateY(-2px);
+        }
+
+        /* Pro badge is hidden via JS removing it, but this style is kept just in case */
+        .pro-badge {
+            position: absolute;
+            top: -0.75rem;
+            right: 0.5rem;
+            background: linear-gradient(90deg, #8A2BE2, #4A90E2);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 99px;
+            transform: rotate(10deg);
+        }
+
+        /* --- Advanced Options Styling --- */
+        .advanced-options-group {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem;
+            margin-top: 0.5rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .advanced-options-label {
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 500;
+            color: #D1D5DB;
+            /* gray-300 */
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .advanced-options-input {
+            width: 100%;
+            padding: 0.75rem;
+            /* 12px */
+            background-color: #1F2937;
+            /* gray-800 */
+            border: 1px solid #374151;
+            /* gray-700 */
+            color: white;
+            transition: all 0.2s ease-in-out;
+            border-radius: 0.5rem;
+        }
+
+        .advanced-options-input::placeholder {
+            color: #6B7280;
+            /* placeholder-gray-500 */
+        }
+
+        .advanced-options-input:focus {
+            outline: none;
+            border-color: #A855F7;
+            /* ring-purple-500 */
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.5);
+            /* ring-purple-500 */
+        }
+
+        /* --- Disabled Feature Styling (No longer used, but kept for reference) --- */
+        .disabled-feature {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            /* Prevents interaction */
+        }
+
+        .disabled-feature select,
+        .disabled-feature input,
+        .disabled-feature button {
+            pointer-events: none;
+            /* Ensure child elements are also disabled */
+            background-color: #374151 !important;
+            /* gray-700 */
+        }
+
+        /* --- Star Rating Styling --- */
+        .star-rating {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            /* To make hover effect work correctly */
+            justify-content: flex-end;
+        }
+
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 1.5rem;
+            /* Adjust size as needed */
+            color: #4B5563;
+            /* gray-600 - Empty star color */
+            cursor: pointer;
+            padding: 0 0.1em;
+            transition: color 0.2s;
+        }
+
+        .star-rating input[type="radio"]:checked~label,
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #FBBF24;
+            /* amber-400 - Filled star color */
+        }
+
+        /* Simple Modal for Messages */
+        #messageModal {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #messageModal[aria-hidden="true"] {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #messageModal[aria-hidden="false"] {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- AdSense Placeholder Styling --- */
+        .adsense-placeholder {
+            background-color: #1F2937;
+            /* gray-800 */
+            border: 1px dashed #374151;
+            /* gray-700 */
+            color: #6B7280;
+            /* gray-500 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            min-height: 90px;
+            width: 100%;
+            max-width: 728px;
+            /* Desktop banner size */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.5rem;
+        }
+
+        /* Footer Policy Modal Styling (New) */
+        .footer-policy-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-policy-modal-content {
+            background: #0A0F1F;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glassmorphism">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white">
+                AICraft<span class="gradient-text">Writer</span>
+            </h1>
+            <nav id="mobileNav"
+                class="hidden md:flex md:items-center md:space-x-8 absolute md:relative top-full left-0 w-full md:w-auto bg-[#0A0F1F] md:bg-transparent p-6 md:p-0">
+                <a href="#features"
+                    class="block md:inline-block text-gray-300 hover:text-white transition mb-2 md:mb-0">Features</a>
+                <a href="#pricing"
+                    class="block md:inline-block text-gray-300 hover:text-white transition mb-2 md:mb-0">Pricing</a>
+                <a href="#testimonials"
+                    class="block md:inline-block text-gray-300 hover:text-white transition">Testimonials</a>
+            </nav>
+            <div class="flex items-center">
+                <!-- Sign In Button (JS shows/hides) -->
+                <a href="auth.html" id="signInBtn"
+                    class="hidden px-5 py-2 rounded-lg font-semibold text-white gradient-bg hover:opacity-90 transition md:block">
+                    Sign In
+                </a>
+
+                <!-- Profile Button (JS shows/hides) -->
+                <div id="profileBtnContainer" class="hidden relative ml-4">
+                    <button id="profileBtn"
+                        class="w-10 h-10 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center text-gray-300 hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </button>
+                    <!-- Profile Dropdown -->
+                    <div id="profileDropdown"
+                        class="hidden absolute right-0 mt-2 w-56 rounded-xl glassmorphism shadow-lg py-2 z-10">
+                        <div class="px-4 py-2 border-b border-gray-700">
+                            <p class="text-sm text-gray-400">Signed in as</p>
+                            <p id="userEmailDisplay" class="text-sm font-medium text-white truncate">...</p>
+                        </div>
+                        <div class="px-4 py-2">
+                            <p class="text-sm text-gray-400">Current Plan:</p>
+                            <p id="userPlanDisplay" class="text-sm font-medium text-white capitalize">...</p>
+                        </div>
+                        <button id="signOutBtn"
+                            class="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition">
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-white ml-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="pt-32 pb-20 text-center">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                    Create Any Type of Content <br> <span class="gradient-text">10x Faster with AI</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+                    Your all-in-one AI content writing assistant for blogs, social media, YouTube scripts, and more.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#start-creating"
+                        class="px-8 py-3 rounded-lg font-bold text-white gradient-bg hover:opacity-90 transition transform hover:scale-105">
+                        Try for Free
+                    </a>
+                    <button id="watchDemoBtn"
+                        class="px-8 py-3 rounded-lg font-bold secondary-btn hover:text-white transition transform hover:scale-105 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Watch Demo
+                    </button>
+                </div>
+
+                <!-- Hero Image Illustration -->
+                <div class="mt-16 max-w-4xl mx-auto p-4 rounded-xl glassmorphism scroll-animation">
+                    <div class="bg-slate-800 rounded-lg shadow-2xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <p class="text-left font-mono text-sm text-green-400">
+                            <span class="text-gray-500">></span> <span id="animated-prompt-target">Generating social
+                                media post...</span>
+                        </p>
+                        <div
+                            class="text-left font-mono text-sm text-gray-300 mt-2 p-4 bg-slate-900 rounded typing-effect">
+                            <p>🚀 Just launched our new feature! AICraft Writer now helps you create engaging YouTube
+                                scripts in minutes. Say goodbye to writer's block! #AI #ContentCreation #YouTube</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google AdSense Ad Slot (Below Hero) -->
+        <section class="container mx-auto px-6 py-8">
+            <div class="adsense-placeholder">
+                <!-- Google AdSense Ad Slot -->
+                <!-- Responsive Ad Unit (728x90 Desktop, Auto Mobile) -->
+                <!-- Replace this div with your AdSense code snippet -->
+                Google AdSense 728x90 Placeholder 1
+            </div>
+        </section>
+        <!-- End Google AdSense Ad Slot -->
+
+        <!-- Start Creating Section -->
+        <section id="start-creating" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl mx-auto p-8 md:p-12 rounded-xl glassmorphism scroll-animation text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Start Creating?</h2>
+                    <p class="text-gray-400 text-lg mb-8">Tell us your idea, and let our AI do the heavy lifting.</p>
+
+                    <form id="aiContentForm" class="space-y-6">
+                        <div>
+                            <label for="contentType" class="sr-only">Content Type</label>
+                            <select id="contentType" name="contentType"
+                                class="w-full p-4 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                                <option value="Blog Post">Blog Post</option>
+                                <option value="Social Media Post">Social Media Post</option>
+                                <option value="YouTube Script">YouTube Script</option>
+                                <option value="Film Making Script">Film Making Script</option>
+                                <option value="Email Newsletter">Email Newsletter</option>
+                                <option value="Marketing Copy">Marketing Copy</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Browse Templates Button -->
+                        <div class="text-right -mb-4">
+                            <button type="button" id="openTemplateModalBtn"
+                                class="text-sm font-medium text-purple-400 hover:text-purple-300 transition">
+                                ✨ Browse Templates
+                            </button>
+                        </div>
+
+                        <div>
+                            <label for="userIdea" class="sr-only">Your Idea or Topic</label>
+                            <textarea id="userIdea" name="userIdea" rows="4"
+                                class="w-full p-4 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                                placeholder="e.g., 'A 5-step guide to digital marketing for beginners...'"></textarea>
+                        </div>
+
+                        <!-- Helper Text -->
+                        <p class="text-xs text-gray-500 italic text-left -mt-3">
+                            The quality of the result you get directly depends on the strength of the prompt you
+                            provide. A powerful prompt leads to a powerful result. Naturally, all outcomes are a
+                            reflection of the input, including the expected and unexpected reactions—like Love/Beauty,
+                            Laughter/Joy, Anger, Compassion/Sorrow, Disgust, Fear, and Courage/Heroism.
+                        </p>
+
+                        <!-- Advanced Options (Now Free) -->
+                        <div id="advancedOptionsContainer" class="advanced-options-group text-left">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-lg font-semibold text-white">Advanced Options</label>
+                                <!-- PRO Badge Removed -->
+                            </div>
+                            <p class="text-sm text-gray-400 mb-4">Refine your content to match your brand's voice and
+                                SEO goals.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="tone" class="advanced-options-label">Tone</label>
+                                    <select id="tone" name="tone" class="advanced-options-input">
+                                        <option value="Default">Default</option>
+                                        <option value="Casual">Casual</option>
+                                        <option value="Professional">Professional</option>
+                                        <option value="Witty">Witty</option>
+                                        <option value="Persuasive">Persuasive</option>
+                                        <option value="Empathetic">Empathetic</option>
+                                        <option value="Formal">Formal</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="seoKeywords" class="advanced-options-label">SEO Keywords</label>
+                                    <input type="text" id="seoKeywords" name="seoKeywords"
+                                        class="advanced-options-input" placeholder="e.g., digital marketing, seo tips">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Login Prompt -->
+                        <p id="loginToGeneratePrompt" class="hidden text-center text-yellow-400 font-semibold">
+                            Please <a href="auth.html" class="underline hover:text-yellow-300">Sign In</a> to generate
+                            content.
+                        </p>
+
+                        <!-- Generate Button -->
+                        <button type="submit" id="generateContentBtn"
+                            class="w-full px-8 py-4 rounded-lg font-bold text-white gradient-bg hover:opacity-90 transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Generate Content Now
+                        </button>
+                    </form>
+
+                    <!-- Generated Content Area -->
+                    <div id="generatedContentWrapper" class="hidden mt-8 text-left">
+                        <div class="p-6 md:p-8 rounded-xl glassmorphism">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-2xl font-bold text-white">Your Generated Content</h3>
+                                <button id="copyContentBtn"
+                                    class="px-4 py-2 rounded-lg font-semibold text-sm secondary-btn hover:text-white transition">
+                                    Copy Text
+                                </button>
+                            </div>
+                            <div id="generationStatus" class="text-center p-4 text-gray-400 hidden"></div>
+                            <div id="generatedContentOutput" class="text-gray-300 bg-slate-900 p-4 rounded-lg"
+                                style="min-height: 100px; max-height: 400px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Features Section -->
+        <section id="features" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white scroll-animation">Everything You Need to Create
+                    </h2>
+                    <p class="text-gray-400 mt-2 scroll-animation">Unleash your creativity with powerful AI features.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="p-8 rounded-xl glassmorphism text-center scroll-animation">
+                        <div class="inline-block p-4 rounded-full gradient-bg mb-4"> <svg class="w-8 h-8 text-white"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2.5L13.1339 6.86607L17.5 8L13.1339 9.13393L12 13.5L10.8661 9.13393L6.5 8L10.8661 6.86607L12 2.5Z"
+                                    stroke="white" stroke-width="2" stroke-linejoin="round" />
+                                <path
+                                    d="M5.5 8.5L6.28887 11.2111L9 12L6.28887 12.7889L5.5 15.5L4.71113 12.7889L2 12L4.71113 11.2111L5.5 8.5Z"
+                                    stroke="white" stroke-width="2" stroke-linejoin="round" />
+                                <path
+                                    d="M18.5 14.5L19.2889 17.2111L22 18L19.2889 18.7889L18.5 21.5L17.7111 18.7889L15 18L17.7111 17.2111L18.5 14.5Z"
+                                    stroke="white" stroke-width="2" stroke-linejoin="round" />
+                            </svg> </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Smart Content Generation</h3>
+                        <p class="text-gray-400">Let our AI draft your content in seconds. From a single idea to a full
+                            article, instantly.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-center scroll-animation">
+                        <div class="inline-block p-4 rounded-full gradient-bg mb-4"> <svg class="w-8 h-8 text-white"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="white" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg> </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Social Media Optimization</h3>
+                        <p class="text-gray-400">Generate captions, posts, and tweets tailored for platforms like
+                            Instagram, Twitter, and LinkedIn.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-center scroll-animation">
+                        <div class="inline-block p-4 rounded-full gradient-bg mb-4"> <svg class="w-8 h-8 text-white"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 3H4v6h6V3zM20 3h-6v6h6V3zM10 15H4v6h6v-6zM20 15h-6v6h6v-6z" stroke="white"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg> </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Script & Blog Templates</h3>
+                        <p class="text-gray-400">Access a library of templates for YouTube scripts, blog posts, and
+                            email newsletters.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-center scroll-animation">
+                        <div class="inline-block p-4 rounded-full gradient-bg mb-4"> <svg class="w-8 h-8 text-white"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 8h4M18 16h4"
+                                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg> </div>
+                        <h3 class="text-xl font-bold text-white mb-2">SEO & Tone Customization</h3>
+                        <p class="text-gray-400">Optimize for search engines and adjust the tone to match your brand's
+                            voice perfectly.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-center scroll-animation">
+                        <div class="inline-block p-4 rounded-full gradient-bg mb-4"> <svg class="w-8 h-8 text-white"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"
+                                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <rect x="8" y="2" width="8" height="4" rx="1" stroke="white" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg> </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Export & Copy Anywhere</h3>
+                        <p class="text-gray-400">Easily copy your generated content or export it to your favorite
+                            platforms with a single click.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-center scroll-animation">
+                        <div class="inline-block p-4 rounded-full gradient-bg mb-4"> <svg class="w-8 h-8 text-white"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="white" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M22 4L12 14.01l-3-3" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg> </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Plagiarism Free</h3>
+                        <p class="text-gray-400">Generate unique and original content every time, ensuring your work
+                            stands out.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google AdSense Ad Slot (Between Features and How It Works) -->
+        <section class="container mx-auto px-6 py-8">
+            <div class="adsense-placeholder">
+                <!-- Google AdSense Ad Slot -->
+                <!-- Responsive Ad Unit (728x90 Desktop, Auto Mobile) -->
+                <!-- Replace this div with your AdSense code snippet -->
+                Google AdSense 728x90 Placeholder 2
+            </div>
+        </section>
+        <!-- End Google AdSense Ad Slot -->
+
+        <!-- How It Works Section -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white scroll-animation">Get Content in 3 Easy Steps
+                    </h2>
+                    <p class="text-gray-400 mt-2 scroll-animation">Start creating in less than a minute.</p>
+                </div>
+                <div class="relative">
+                    <div
+                        class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 border-t-2 border-dashed border-gray-600 -translate-y-1/2">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                        <div class="text-center scroll-animation">
+                            <div
+                                class="w-20 h-20 mx-auto flex items-center justify-center rounded-full gradient-bg text-white text-3xl font-bold mb-4 border-4 border-slate-700">
+                                1</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Choose Content Type</h3>
+                            <p class="text-gray-400">Select from blogs, social media posts, YouTube scripts, and more.
+                            </p>
+                        </div>
+                        <div class="text-center scroll-animation">
+                            <div
+                                class="w-20 h-20 mx-auto flex items-center justify-center rounded-full gradient-bg text-white text-3xl font-bold mb-4 border-4 border-slate-700">
+                                2</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Add Your Idea</h3>
+                            <p class="text-gray-400">Provide a short description, topic, or keywords to guide the AI.
+                            </p>
+                        </div>
+                        <div class="text-center scroll-animation">
+                            <div
+                                class="w-20 h-20 mx-auto flex items-center justify-center rounded-full gradient-bg text-white text-3xl font-bold mb-4 border-4 border-slate-700">
+                                3</div>
+                            <h3 class="text-xl font-bold text-white mb-2">Get Polished Results</h3>
+                            <p class="text-gray-400">Receive high-quality, ready-to-use content instantly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases Section -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white scroll-animation">Built for Every Kind of
+                        Creator</h2>
+                    <p class="text-gray-400 mt-2 scroll-animation">Whether you're a team of one or one hundred.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="p-8 rounded-xl glassmorphism text-left scroll-animation">
+                        <h3 class="text-xl font-bold text-white mb-2">Bloggers</h3>
+                        <p class="text-gray-400">Generate SEO-friendly articles and overcome writer's block to publish
+                            content consistently.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-left scroll-animation">
+                        <h3 class="text-xl font-bold text-white mb-2">YouTubers</h3>
+                        <p class="text-gray-400">Quickly draft video scripts, titles, and descriptions that capture
+                            audience attention.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-left scroll-animation">
+                        <h3 class="text-xl font-bold text-white mb-2">Marketing Teams</h3>
+                        <p class="text-gray-400">Scale your content strategy with AI-generated ad copy, emails, and
+                            social media updates.</p>
+                    </div>
+                    <div class="p-8 rounded-xl glassmorphism text-left scroll-animation">
+                        <h3 class="text-xl font-bold text-white mb-2">Freelancers</h3>
+                        <p class="text-gray-400">Deliver high-quality work to clients faster and take on more projects
+                            with confidence.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google AdSense Ad Slot (Between Use Cases and Pricing) -->
+        <section class="container mx-auto px-6 py-8">
+            <div class="adsense-placeholder">
+                <!-- Google AdSense Ad Slot -->
+                <!-- Responsive Ad Unit (728x90 Desktop, Auto Mobile) -->
+                <!-- Replace this div with your AdSense code snippet -->
+                Google AdSense 728x90 Placeholder 3
+            </div>
+        </section>
+        <!-- End Google AdSense Ad Slot -->
+
+        <!-- Pricing Section (Free Plan Only) -->
+        <section id="pricing" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white scroll-animation">Our Plan</h2>
+                    <p class="text-gray-400 mt-2 scroll-animation">Completely free. All features included.</p>
+                </div>
+                <!-- Modified grid to center the single free plan -->
+                <div class="grid grid-cols-1 max-w-md mx-auto">
+                    <div class="p-8 rounded-xl glassmorphism scroll-animation relative">
+                        <!-- Added relative positioning -->
+                        <span
+                            class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 px-4 py-1 text-sm font-bold text-white gradient-bg rounded-full">Free
+                            For Everyone</span>
+                        <h3 class="text-2xl font-bold text-white mb-2 mt-4">Free Plan</h3>
+                        <p class="text-gray-400 mb-6">For everyone</p>
+                        <p class="text-4xl font-extrabold text-white mb-6">₹0<span
+                                class="text-lg font-normal text-gray-400">/mo</span></p>
+                        <!-- Updated features to reflect full access -->
+                        <ul class="space-y-4 text-gray-300 mb-8">
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-2" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>Unlimited words</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-2" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>All templates & features</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-2" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>SEO & Tone customization</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-2" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>Standard support</li>
+                        </ul>
+                        <a href="#start-creating"
+                            class="block w-full py-3 rounded-lg font-bold secondary-btn hover:text-white transition text-center">Get
+                            Started</a>
+                    </div>
+                    <!-- Pro Plan Div REMOVED -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-10">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white scroll-animation">Loved by Creators Worldwide
+                    </h2>
+                    <p class="text-gray-400 mt-2 scroll-animation">See what our users are saying.</p>
+                </div>
+                <div id="testimonialList" class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                    <p class="text-gray-500 text-center lg:col-span-3">Loading reviews...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Write a Review Section -->
+        <section id="write-review" class="py-10 bg-slate-900/50">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div id="reviewFormContainer" class="hidden">
+                    <h2 class="text-3xl font-bold text-white mb-4 text-center">Share Your Experience</h2>
+                    <form id="reviewForm" class="p-8 rounded-xl glassmorphism space-y-4">
+                        <div>
+                            <label for="reviewName" class="block text-sm font-medium text-gray-300 mb-1">Your
+                                Name</label>
+                            <input type="text" id="reviewName" name="reviewName" required
+                                class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                                placeholder="e.g., Jane Doe">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Rating</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" required><label for="star5"
+                                    title="5 stars">★</label>
+                                <input type="radio" id="star4" name="rating" value="4"><label for="star4"
+                                    title="4 stars">★</label>
+                                <input type="radio" id="star3" name="rating" value="3"><label for="star3"
+                                    title="3 stars">★</label>
+                                <input type="radio" id="star2" name="rating" value="2"><label for="star2"
+                                    title="2 stars">★</label>
+                                <input type="radio" id="star1" name="rating" value="1"><label for="star1"
+                                    title="1 star">★</label>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="reviewText" class="block text-sm font-medium text-gray-300 mb-1">Your
+                                Review</label>
+                            <textarea id="reviewText" name="reviewText" rows="4" required
+                                class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
+                                placeholder="Tell us what you think..."></textarea>
+                        </div>
+                        <p id="reviewSubmitStatus" class="text-sm text-center"></p>
+                        <button type="submit"
+                            class="w-full px-8 py-3 rounded-lg font-bold text-white gradient-bg hover:opacity-90 transition transform hover:scale-105 disabled:opacity-70">
+                            Post Review
+                        </button>
+                    </form>
+                </div>
+                <div id="reviewLoginPrompt" class="text-center text-gray-400">
+                    <p>Want to share your experience? <a href="auth.html"
+                            class="text-purple-400 hover:text-purple-300 font-semibold">Sign in</a> to leave a review.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google AdSense Ad Slot (Above Footer) -->
+        <section class="container mx-auto px-6 py-8">
+            <div class="adsense-placeholder">
+                <!-- Google AdSense Ad Slot -->
+                <!-- Responsive Ad Unit (728x90 Desktop, Auto Mobile) -->
+                <!-- Replace this div with your AdSense code snippet -->
+                Google AdSense 728x90 Placeholder 4
+            </div>
+        </section>
+        <!-- End Google AdSense Ad Slot -->
+
+    </main>
+
+    <footer class="bg-slate-900 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">
+                    AICraft<span class="gradient-text">Writer</span>
+                </h2>
+            </div>
+            <!-- MODIFIED FOOTER LINKS: ALL LINKS NOW USE showPolicy() function -->
+            <div class="flex justify-center space-x-6 mb-6">
+                <!-- About now calls showPolicy('about') -->
+                <button type="button" class="text-gray-400 hover:text-white transition"
+                    onclick="showPolicy('about')">About</button>
+                <!-- Terms of Service opens the modal -->
+                <button type="button" class="text-gray-400 hover:text-white transition"
+                    onclick="showPolicy('terms')">Terms of Service</button>
+                <!-- Privacy Policy opens the modal -->
+                <button type="button" class="text-gray-400 hover:text-white transition"
+                    onclick="showPolicy('privacy')">Privacy Policy</button>
+            </div>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6.02,17.11 7.89,17.15C6.43,18.26 4.71,18.98 2.86,18.98C2.5,18.98 2.15,18.97 1.82,18.91C3.72,20.15 5.95,20.83 8.35,20.83C16,20.83 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z">
+                        </path>
+                    </svg></a>
+                <a href="#" class="text-gray-400 hover:text-white transition"><svg class="w-6 h-6" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M19,3H5C3.89,3 3,3.89 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.89 20.1,3 19,3M8.5,18H6.5V11H8.5V18M7.5,9.81C6.79,9.81 6.19,9.21 6.19,8.5C6.19,7.79 6.79,7.19 7.5,7.19C8.21,7.19 8.81,7.79 8.81,8.5C8.81,9.21 8.21,9.81 7.5,9.81M18,18H16V14.37C16,13.43 15.24,12.68 14.31,12.68C13.38,12.68 12.63,13.43 12.63,14.37V18H10.63V11H12.63V12.25C13.1,11.5 14.04,10.88 15.1,10.88C16.82,10.88 18,12.06 18,13.91V18Z">
+                        </path>
+                    </svg></a>
+            </div>
+
+            <!-- Content Sections (NOW HIDDEN by default, used as data sources) -->
+            <div id="about-content" class="text-left mt-8 p-6 rounded-lg bg-slate-800/50 hidden">
+                <h3 class="text-xl font-bold text-white mb-3 border-b border-gray-700 pb-2">About AICraft Writer</h3>
+                <p class="text-gray-400">AICraft Writer is your modern AI content generation tool. Built by AMAN
+                    CHAUHAN, our mission is to empower creators, marketers, and businesses to produce high-quality,
+                    original content 10x faster. We utilize state-of-the-art language models to help you overcome
+                    writer's block and scale your content efforts with ease. We believe in providing powerful tools
+                    with full access to everyone, which is why our platform is completely free with all features
+                    locked.</p>
+            </div>
+            <div id="terms-of-service-content" class="text-left p-6 hidden">
+                <h3 class="text-2xl font-bold text-white mb-3">Terms of Service</h3>
+                <p class="text-gray-300">**1. Acceptance of Terms:** By using AICraft Writer, you agree to these Terms
+                    of Service. We reserve the right to modify these terms at any time.</p>
+                <p class="text-gray-300">**2. User Content:** You retain all rights to the content you create. You grant
+                    us a license to use your prompts/ideas solely to operate and improve the service.</p>
+                <p class="text-gray-300">**3. Free Service:** The service is provided "as-is" and is currently free. We
+                    do not guarantee uninterrupted access or specific uptime. We reserve the right to introduce paid
+                    plans or limits in the future with prior notice.</p>
+                <p class="text-gray-300">**4. Prohibited Use:** You must not use the service to generate content that
+                    is illegal, defamatory, or violates any third-party rights. Accounts violating this policy may be
+                    suspended.</p>
+            </div>
+            <div id="privacy-policy-content" class="text-left p-6 hidden">
+                <h3 class="text-2xl font-bold text-white mb-3">Privacy Policy</h3>
+                <p class="text-gray-300">**1. Data Collection:** We collect minimal data, including your email address
+                    (for login), usage statistics, and non-personal data necessary for Google Analytics and Firebase to
+                    maintain the service.</p>
+                <p class="text-gray-300">**2. Content Privacy:** Your generated content and prompts are considered
+                    confidential and will not be shared with third parties, except as required for the core function of
+                    the AI API (e.g., OpenRouter, Gemini). The content itself is not used to train AI models unless
+                    explicitly consented to by you.</p>
+                <p class="text-gray-300">**3. Cookies:** We use cookies to manage your session and provide basic
+                    functionality (Firebase Auth). Third-party services like Google Analytics may also use cookies.</p>
+                <p class="text-gray-300">**4. Security:** We employ industry-standard security measures, including
+                    Firebase Authentication, to protect your data, but no system is 100% secure.</p>
+            </div>
+
+            <p class="text-gray-500 mt-10">&copy; 2025 AICraft Writer - AMAN CHAUHAN. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Demo Modal (existing) -->
+    <div id="demoModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+        <div class="bg-slate-800 rounded-lg p-4 max-w-2xl w-full m-4 relative shadow-2xl">
+            <button id="closeModalBtn"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            <h2 class="text-2xl font-bold text-white mb-4">AICraft Writer Demo</h2>
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe class="rounded-lg w-full h-full" src="https://www.youtube.com/embed/g-g-9-sF4pM?si=G-L3s-e-G-c-s-E"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Modal (existing) -->
+    <div id="templateModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-slate-800 rounded-lg p-6 max-w-3xl w-full m-4 relative shadow-2xl glassmorphism">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="templateModalTitle" class="text-2xl font-bold text-white">Browse Templates</h2>
+                <button id="closeTemplateModalBtn"
+                    class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div id="templateModalContent" class="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
+                <div id="template-list-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal (existing) -->
+    <div id="messageModal" aria-hidden="true"
+        class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[60] p-4">
+        <div class="bg-slate-800 rounded-lg p-6 max-w-sm w-full m-4 relative shadow-2xl glassmorphism text-center">
+            <p id="messageModalText" class="text-white mb-4">Message goes here...</p>
+            <button id="messageModalCloseBtn"
+                class="px-6 py-2 rounded-lg font-semibold text-white gradient-bg hover:opacity-90 transition">
+                OK
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Policy Modal (POPUP BOX FOR TERMS & PRIVACY) -->
+    <div id="policyModal" class="footer-policy-modal">
+        <div class="footer-policy-modal-content">
+            <button onclick="closePolicyModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            <div id="policyModalContent">
+                <!-- Policy content will be injected here -->
+            </div>
+        </div>
+    </div>
+    <!-- End Policy Modal -->
+
+    <!-- Firebase Script (Auth & Firestore) -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp, getApp, getApps, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut,
+            getIdToken // Import getIdToken
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import {
+            getFirestore, // Import getFirestore for default app
+            collection,
+            addDoc,
+            query,
+            onSnapshot,
+            serverTimestamp,
+            doc,
+            getDoc,
+            setDoc
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+
+        // --- Firebase Configurations & Instances ---
+        let authApp, reviewApp;
+        let auth, analytics, authDb, reviewDb; // Removed: functions
+        let currentUserId = null;
+        let currentUserEmail = null;
+        let currentUserPlan = null;
+        
+
+        // --- DOM Elements ---
+        const signInBtn = document.getElementById('signInBtn');
+        const profileBtnContainer = document.getElementById('profileBtnContainer');
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const userPlanDisplay = document.getElementById('userPlanDisplay');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+        const advancedOptionsContainer = document.getElementById('advancedOptionsContainer');
+        const reviewFormContainer = document.getElementById('reviewFormContainer');
+        const reviewLoginPrompt = document.getElementById('reviewLoginPrompt');
+        const reviewForm = document.getElementById('reviewForm');
+        const reviewNameInput = document.getElementById('reviewName');
+        const reviewTextInput = document.getElementById('reviewText');
+        const reviewSubmitStatus = document.getElementById('reviewSubmitStatus');
+        const testimonialListContainer = document.getElementById('testimonialList');
+        const generateContentBtn = document.getElementById('generateContentBtn');
+        const loginToGeneratePrompt = document.getElementById('loginToGeneratePrompt');
+        const generatedContentWrapper = document.getElementById('generatedContentWrapper');
+        const messageModal = document.getElementById('messageModal');
+        const messageModalText = document.getElementById('messageModalText');
+        const messageModalCloseBtn = document.getElementById('messageModalCloseBtn');
+
+        // --- App ID ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        setLogLevel('Debug');
+
+        // --- Utility Functions ---
+        function showMessage(message, isError = false) {
+            if (messageModal && messageModalText && messageModalCloseBtn) {
+                messageModalText.textContent = message;
+                messageModalText.className = isError ? 'text-red-400 mb-4' : 'text-white mb-4';
+                messageModal.setAttribute('aria-hidden', 'false');
+            } else {
+                console.log("Fallback Message:", message); // Use console if modal fails
+            }
+        }
+        if (messageModalCloseBtn && messageModal) {
+            messageModalCloseBtn.addEventListener('click', () => {
+                messageModal.setAttribute('aria-hidden', 'true');
+            });
+            messageModal.addEventListener('click', (e) => {
+                if (e.target === messageModal) { // Close only if overlay is clicked
+                    messageModal.setAttribute('aria-hidden', 'true');
+                }
+            });
+        }
+
+        // --- This function now just enables all features and sets text ---
+        function updateUIBasedOnPlan(plan) {
+            const isPro = true; // --- FORCE ALL FEATURES TO BE FREE ---
+            if (advancedOptionsContainer) {
+                if (isPro) {
+                    advancedOptionsContainer.classList.remove('disabled-feature');
+                    advancedOptionsContainer.title = "";
+                } else {
+                    // This 'else' block will not be reached
+                    advancedOptionsContainer.classList.add('disabled-feature');
+                    advancedOptionsContainer.title = "Upgrade to Pro to use Advanced Options";
+                }
+            }
+            if (userPlanDisplay) {
+                // --- Set text to "Full Access" ---
+                userPlanDisplay.textContent = 'Full Access';
+            }
+            window.currentUserPlanStatus = 'pro'; // --- Force 'pro' for template modal ---
+            console.log(`UI Updated. All features enabled.`);
+        }
+
+        function displayReviews(reviews) {
+            // ... (displayReviews function - uses reviewDb, no change needed) ...
+            if (!testimonialListContainer) return;
+            testimonialListContainer.innerHTML = '';
+
+            if (reviews.length === 0) {
+                testimonialListContainer.innerHTML = '<p class="text-gray-500 text-center lg:col-span-3">Be the first to leave a review!</p>';
+                return;
+            }
+
+            reviews.forEach(review => {
+                const reviewEl = document.createElement('div');
+                reviewEl.className = 'p-8 rounded-xl glassmorphism scroll-animation animate';
+
+                const nameInitial = review.name ? review.name.charAt(0).toUpperCase() : '?';
+                const avatarColor = ['#8A2BE2', '#4A90E2', '#E24A4A', '#FBBF24', '#34D399'][Math.floor(Math.random() * 5)];
+
+                let starsHTML = '';
+                const rating = parseInt(review.rating, 10);
+                for (let i = 1; i <= 5; i++) {
+                    starsHTML += `<span class="${i <= rating ? 'text-amber-400' : 'text-gray-600'}">★</span>`;
+                }
+
+                reviewEl.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        ${starsHTML}
+                    </div>
+                    <p class="text-gray-300 mb-6">"${review.text}"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full mr-4 flex items-center justify-center text-white font-bold" style="background-color: ${avatarColor};">
+                            ${nameInitial}
+                        </div>
+                        <div>
+                            <p class="font-bold text-white">${review.name}</p>
+                            ${review.createdAt ? `<p class="text-xs text-gray-500">${new Date(review.createdAt.seconds * 1000).toLocaleDateString()}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+                testimonialListContainer.appendChild(reviewEl);
+            });
+        }
+
+        // --- Firebase Initialization ---
+        try {
+            const authFirebaseConfig = { /* ... Your Auth Config ... */
+                apiKey: "AIzaSyCByw4enF25yakEeCeUM1l_yEUBYn2kaAg",
+                authDomain: "aicraftwritter-login-page.firebaseapp.com",
+                projectId: "aicraftwritter-login-page",
+                storageBucket: "aicraftwritter-login-page.appspot.com",
+                messagingSenderId: "523573634127",
+                appId: "1:523573634127:web:34257bca4ef33bf791363a",
+                measurementId: "G-5L6MM85YT1"
+            };
+            const reviewStoreConfig = { /* ... Your Review Config ... */
+                apiKey: "AIzaSyCdvmATO-THgDnn7n-eQNqH-Do53Ktqi9o",
+                authDomain: "aicraftwritter---review-store.firebaseapp.com",
+                projectId: "aicraftwritter---review-store",
+                storageBucket: "aicraftwritter---review-store.appspot.com",
+                messagingSenderId: "468282003829",
+                appId: "1:468282003829:web:1cde978eb825d48b73433c",
+                measurementId: "G-CC7FEKDSVX"
+            };
+
+            // Init Auth App (Default) & Associated Services
+            if (!getApps().length) {
+                authApp = initializeApp(authFirebaseConfig);
+            } else {
+                authApp = getApp();
+            }
+            auth = getAuth(authApp);
+            analytics = getAnalytics(authApp);
+            authDb = getFirestore(authApp); 
+
+            // Init Review App (Named) - Only for reviews
+            let reviewAppInstanceExists = getApps().some(app => app.name === 'reviewApp');
+            if (!reviewAppInstanceExists) {
+                reviewApp = initializeApp(reviewStoreConfig, 'reviewApp');
+            } else {
+                reviewApp = getApp('reviewApp');
+            }
+            reviewDb = getFirestore(reviewApp); // Firestore for reviews remains separate
+
+            // --- Firestore Listener for Reviews (Uses reviewDb) ---
+            const reviewsCol = collection(reviewDb, `/artifacts/${appId}/public/data/reviews`);
+            const q = query(reviewsCol);
+            const unsubscribeReviews = onSnapshot(q, (querySnapshot) => {
+                const reviews = [];
+                querySnapshot.forEach((doc) => {
+                    reviews.push({ id: doc.id, ...doc.data() });
+                });
+                reviews.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                displayReviews(reviews);
+            }, (error) => {
+                console.error("Error fetching reviews:", error);
+                if (testimonialListContainer) {
+                    testimonialListContainer.innerHTML = '<p class="text-red-400 text-center lg:col-span-3">Could not load reviews.</p>';
+                }
+            });
+
+            // --- Auth State Listener (Handles login/logout UI state) ---
+            onAuthStateChanged(auth, async (user) => {
+                const generateBtn = document.getElementById('generateContentBtn');
+                const loginPrompt = document.getElementById('loginToGeneratePrompt');
+                const signInButton = document.getElementById('signInBtn');
+                const profileContainer = document.getElementById('profileBtnContainer');
+
+                if (user) {
+                    currentUserId = user.uid;
+                    currentUserEmail = user.email;
+
+                    // --- LOGGED IN STATE ---
+                    currentUserPlan = 'pro';
+                    console.log("User is logged in:", currentUserEmail, "Plan:", currentUserPlan);
+
+                    // SHOW profile container, HIDE sign-in button
+                    if (signInButton) {
+                        signInButton.classList.add('hidden');
+                        signInButton.classList.remove('md:block'); // FIX: Remove conflicting display class
+                    }
+                    if (profileContainer) profileContainer.classList.remove('hidden');
+
+                    if (userEmailDisplay) userEmailDisplay.textContent = currentUserEmail || 'Profile';
+
+                    updateUIBasedOnPlan(currentUserPlan); // Update plan status text
+
+                    if (reviewFormContainer) reviewFormContainer.classList.remove('hidden');
+                    if (reviewLoginPrompt) reviewLoginPrompt.classList.add('hidden');
+                    if (reviewNameInput) reviewNameInput.value = user.displayName || currentUserEmail?.split('@')[0] || '';
+
+                    if (generateBtn) generateBtn.disabled = false;
+                    if (loginPrompt) loginPrompt.classList.add('hidden');
+
+                } else {
+                    currentUserId = null;
+                    currentUserEmail = null;
+                    currentUserPlan = null;
+                    console.log("User is logged out.");
+
+                    // HIDE profile container, SHOW sign-in button
+                    if (signInButton) {
+                        signInButton.classList.remove('hidden'); 
+                        signInButton.classList.add('md:block'); // FIX: Ensure display class is present when logged out
+                    }
+                    if (profileContainer) profileContainer.classList.add('hidden'); 
+
+                    if (userEmailDisplay) userEmailDisplay.textContent = '...';
+
+                    updateUIBasedOnPlan(null); // Function modified to always unlock all app features
+
+                    if (reviewFormContainer) reviewFormContainer.classList.add('hidden');
+                    if (reviewLoginPrompt) reviewLoginPrompt.classList.remove('hidden');
+
+                    if (generateBtn) generateContentBtn.disabled = true; // Still require login to generate
+                    if (loginPrompt) loginPrompt.classList.remove('hidden'); 
+                    if (generatedContentWrapper) generatedContentWrapper.classList.add('hidden');
+                }
+            });
+
+            // --- Profile Dropdown & Sign Out ---
+            if (profileBtn && profileDropdown) {
+                profileBtn.addEventListener('click', () => profileDropdown.classList.toggle('hidden'));
+            }
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', () => {
+                    // Immediately clear local state for faster UI update
+                    currentUserId = null;
+                    currentUserEmail = null;
+                    currentUserPlan = null;
+                    // Then sign out from Firebase
+                    signOut(auth).then(() => {
+                        console.log('Sign-out successful.');
+                        if (profileDropdown) profileDropdown.classList.add('hidden');
+                        // AuthStateChanged will handle the rest of the UI update
+                    }).catch((error) => console.error('Sign-out error:', error));
+                });
+            }
+            window.addEventListener('click', (event) => {
+                if (profileBtnContainer && !profileBtnContainer.contains(event.target)) {
+                    if (profileDropdown && !profileDropdown.classList.contains('hidden')) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                }
+            });
+
+
+            // --- Handle Review Form Submission (Uses reviewDb) ---
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    reviewSubmitStatus.textContent = '';
+                    const submitButton = reviewForm.querySelector('button[type="submit"]');
+
+                    if (!currentUserId) {
+                        reviewSubmitStatus.textContent = 'Error: You must be signed in to post a review.';
+                        reviewSubmitStatus.className = 'text-sm text-center text-red-400';
+                        return;
+                    }
+
+                    const name = reviewNameInput.value.trim();
+                    const rating = reviewForm.querySelector('input[name="rating"]:checked')?.value;
+                    const text = reviewTextInput.value.trim();
+
+                    if (!name || !rating || !text) {
+                        reviewSubmitStatus.textContent = 'Please fill out all fields and select a rating.';
+                        reviewSubmitStatus.className = 'text-sm text-center text-red-400';
+                        return;
+                    }
+
+                    submitButton.disabled = true;
+                    reviewSubmitStatus.textContent = 'Submitting...';
+                    reviewSubmitStatus.className = 'text-sm text-center text-gray-400';
+
+                    try {
+                        // *** Make sure this still uses reviewsCol (from reviewDb) ***
+                        await addDoc(reviewsCol, {
+                            userId: currentUserId,
+                            name: name,
+                            rating: parseInt(rating, 10),
+                            text: text,
+                            createdAt: serverTimestamp()
+                        });
+                        reviewSubmitStatus.textContent = 'Review submitted successfully! Thank you!';
+                        reviewSubmitStatus.className = 'text-sm text-center text-green-400';
+                        reviewForm.reset();
+                    } catch (error) {
+                        console.error("Error adding review:", error);
+                        reviewSubmitStatus.textContent = 'Error submitting review. Check Firestore rules and try again.';
+                        reviewSubmitStatus.className = 'text-sm text-center text-red-400';
+                    } finally {
+                        submitButton.disabled = false;
+                        setTimeout(() => { reviewSubmitStatus.textContent = ''; }, 5000);
+                    }
+                });
+            }
+
+
+        } catch (e) {
+            console.error("Firebase initialization error:", e);
+            if (reviewLoginPrompt) reviewLoginPrompt.textContent = "Error loading application features. Please refresh.";
+            if (testimonialListContainer) testimonialListContainer.innerHTML = '<p class="text-red-400 text-center lg:col-span-3">Error loading reviews.</p>';
+        }
+
+        // --- Make plan accessible to the other script ---
+        // This will now always return 'pro' (or null if logged out) based on onAuthStateChanged
+        window.getCurrentUserPlan = () => currentUserPlan;
+
+    </script>
+
+    <!-- Main Page Script (includes AI generation, modals, etc.) -->
+    <script>
+        // --- Global functions for Policy Modal (POPUP BOX) ---
+        window.showPolicy = function (type) {
+            const modal = document.getElementById('policyModal');
+            const contentDiv = document.getElementById('policyModalContent');
+            const sourceDivId = type === 'terms' ? 'terms-of-service-content' : type === 'privacy' ? 'privacy-policy-content' : 'about-content';
+            const sourceDiv = document.getElementById(sourceDivId);
+            
+            if (contentDiv && sourceDiv) {
+                // Ensure content is hidden first (already handled by the HTML structure)
+                
+                // Clone content and adjust classes for display
+                const contentClone = sourceDiv.cloneNode(true);
+                contentClone.removeAttribute('id'); // Remove ID to prevent duplicates
+                contentClone.classList.remove('hidden'); 
+                // Remove layout/background styling classes that shouldn't be in the modal view
+                contentClone.classList.remove('p-6', 'mt-8', 'rounded-lg', 'bg-slate-800/50'); 
+                contentClone.classList.add('text-left');
+                
+                contentDiv.innerHTML = '';
+                contentDiv.appendChild(contentClone);
+                
+                // Show modal
+                modal.style.display = 'flex';
+            }
+        };
+
+        window.closePolicyModal = function () {
+            const modal = document.getElementById('policyModal');
+            modal.style.display = 'none';
+        };
+
+        // --- Global function for About Toggle REMOVED as it now uses showPolicy ---
+        window.toggleFooterContent = function () {
+            // This function is now redundant as 'About' uses showPolicy. 
+            // We keep a placeholder version to ensure old button click handlers don't crash.
+            console.warn("toggleFooterContent is deprecated. Use showPolicy('about').");
+        };
+        // --- End Policy Modal functions ---
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Global variable for raw text ---
+            let rawGeneratedText = '';
+
+            // --- Get DOM Elements ---
+            const userIdeaTextarea = document.getElementById('userIdea');
+            const openTemplateModalBtn = document.getElementById('openTemplateModalBtn');
+            const templateModal = document.getElementById('templateModal');
+            const closeTemplateModalBtn = document.getElementById('closeTemplateModalBtn');
+            const templateListContainer = document.getElementById('template-list-container');
+            const templateModalTitle = document.getElementById('templateModalTitle');
+            const contentTypeSelect = document.getElementById('contentType');
+            const policyModal = document.getElementById('policyModal'); // Get the new modal
+
+            // --- Mobile Menu ---
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileNav = document.getElementById('mobileNav');
+            const navLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
+            if (mobileMenuBtn && mobileNav) {
+                mobileMenuBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
+            }
+            if (mobileNav) {
+                navLinks.forEach(link => link.addEventListener('click', () => {
+                    if (!mobileNav.classList.contains('hidden')) mobileNav.classList.add('hidden');
+                }));
+            }
+
+            // --- Animated Hero Prompt (existing) ---
+            const promptTarget = document.getElementById('animated-prompt-target');
+            if (promptTarget) {
+                const prompts = ["Generating social media post...", "Generating YouTube script...", "Generating blogs...", "Generating marketing script..."];
+                let currentIndex = 0;
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % prompts.length;
+                    promptTarget.style.opacity = '0';
+                    setTimeout(() => {
+                        promptTarget.textContent = prompts[currentIndex];
+                        promptTarget.style.opacity = '1';
+                    }, 500);
+                }, 4000);
+            }
+
+            // --- Scroll Animations (existing) ---
+            const animatedElements = document.querySelectorAll('.scroll-animation');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedElements.forEach(el => observer.observe(el));
+
+            // --- Demo Modal (existing) ---
+            const watchDemoBtn = document.getElementById('watchDemoBtn');
+            const demoModal = document.getElementById('demoModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalIframe = demoModal ? demoModal.querySelector('iframe') : null;
+            const iframeSrc = modalIframe ? modalIframe.src : '';
+            const openDemoModal = () => demoModal?.classList.remove('hidden');
+            const closeDemoModal = () => {
+                demoModal?.classList.add('hidden');
+                if (modalIframe) modalIframe.src = iframeSrc; // Reset video
+            }
+            if (watchDemoBtn) watchDemoBtn.addEventListener('click', openDemoModal);
+            if (closeModalBtn) closeModalBtn.addEventListener('click', closeDemoModal);
+
+
+            // --- Template Modal (existing) ---
+            const allTemplates = { /* ... Your templates object ... */
+                "Blog Post": {
+                    "basic": [
+                        { title: "Basic Blog Post", content: "Write a blog post about [Your Topic].\n\nIntroduction:\n- Hook the reader.\n- State the post's purpose.\n\nMain Point 1:\n- [Detail 1]\n- [Detail 2]\n\nMain Point 2:\n- [Detail 1]\n- [Detail 2]\n\nConclusion:\n- Summarize key points.\n- Add a call to action." },
+                        { title: "Listicle Post (3 Items)", content: "Write a listicle blog post titled '3 Ways to [Achieve Goal]'.\n\n1. [Item 1 Name]: \n   - [Brief explanation]\n\n2. [Item 2 Name]: \n   - [Brief explanation]\n\n3. [Item 3 Name]: \n   - [Brief explanation]\n\nConclusion:\n- [Final summary sentence]" },
+                        { title: "Question & Answer Post", content: "Write a blog post answering the common question: '[Your Question Here]?'.\n\n- Start by stating the question.\n- Provide a direct, concise answer.\n- Elaborate on the answer with more detail and context.\n- Conclude with why this answer is important." }
+                    ],
+                    "pro": [
+                        { title: "SEO-Optimized 'How-To' Guide", content: "Write a comprehensive, step-by-step 'how-to' guide on '[Your Topic]'.\n\n- Primary Keyword: [Your Keyword]\n- Secondary Keywords: [Keyword 2], [Keyword 3]\n\nStructure:\n- **Introduction:** Hook the reader by highlighting the problem. State that this guide will provide the solution.\n- **Step 1: [Step 1 Title]**: [Detailed explanation]\n- **Step 2: [Step 2 Title]**: [Detailed explanation]\n- **Step 3: [Step 3 Title]**: [Detailed explanation]\n- **Step 4: [Step 4 Title]**: [Detailed explanation]\n- **Step 5: [Step 5 Title]**: [Detailed explanation]\n- **Troubleshooting/FAQ:** Answer 2-3 common problems.\n- **Conclusion:** Summarize the steps and add a strong call to action." },
+                        { title: "In-Depth Product Review", content: "Write a detailed, unbiased review of [Product Name].\n\n- **Introduction:** What is the product and who is it for?\n- **Key Features:** List and explain the top 3-5 features.\n- **Pros:** What's great about it? (e.g., [Pro 1], [Pro 2])\n- **Cons:** What are the drawbacks? (e.g., [Con 1], [Con 2])\n- **Pricing:** Is it worth the cost?\n- **Alternatives:** Briefly mention 1-2 competitors (e.g., [Alternative 1]).\n- **Final Verdict:** Give a final rating and recommendation." },
+                        { title: "Case Study Article", content: "Write a case study blog post showing how [Company/Person] achieved [Result] using [Method/Product].\n\n- **The Challenge:** What problem did they face?\n- **The Solution:** What specific steps or product did they use?\n- **The Implementation:** How did they apply the solution?\n- **The Results:** What were the measurable outcomes? (e.g., % increase in traffic, $ saved)\n- **Conclusion:** What key lesson can readers learn from this?" },
+                        { title: "Expert Roundup Post", content: "Write an 'expert roundup' post on the topic: '[Your Question]'.\n\n- **Introduction:** Introduce the question and explain why you asked experts.\n- **Expert 1: [Name]**: [Quote/Advice]\n- **Expert 2: [Name]**: [Quote/Advice]\n- **Expert 3: [Name]**: [Quote/Advice]\n- **Expert 4: [Name]**: [Quote/Advice]\n- **Expert 5: [Name]**: [Quote/Advice]\n- **Key Takeaways:** Summarize the main themes from the experts' advice." },
+                        { title: "Ultimate Guide/Pillar Page", content: "Write an 'Ultimate Guide' pillar page for the topic '[Your Topic]'. This should be a long-form, comprehensive overview.\n\n- **Chapter 1: Introduction to [Topic]**: What it is, why it matters.\n- **Chapter 2: The Fundamentals of [Sub-Topic 1]**: [Detail]\n- **Chapter 3: Advanced Strategies for [Sub-Topic 2]**: [Detail]\n- **Chapter 4: Tools and Resources**: [List tools/resources]\n- **Chapter 5: The Future of [Topic]**: [Trends and predictions]\n- **Conclusion:** [Final summary]" }
+                    ]
+                },
+                "Social Media Post": {
+                    "basic": [
+                        { title: "Engaging Question Post", content: "Write a social media post (for [Platform, e.g., Twitter/LinkedIn]) that asks an engaging question.\n\n- **Hook:** [Start with a relatable statement]\n- **Question:** [Ask a clear, open-ended question about your industry]\n- **Call to Action:** 'Let me know your thoughts in the comments!'\n- **Hashtags:** #[RelevantHashtag1] #[RelevantHashtag2]" },
+                        { title: "Quick Tip Post", content: "Write a 'Quick Tip' social media post.\n\n- **Tip Title:** (e.g., 'Pro Tip Tuesday 💡')\n- **The Tip:** [Provide a single, actionable piece of advice related to your niche.]\n- **Hashtags:** #[QuickTip] #[YourNiche]" },
+                        { title: "Quote Graphic Post", content: "Write a caption for an inspiring quote graphic.\n\n- **The Quote:** '[Insert Quote Here]' - [Author]\n- **Caption:** [Add a 1-2 sentence reflection on why this quote matters to your audience.]\n- **Hashtags:** #[Inspiration] #[Motivation]" }
+                    ],
+                    "pro": [
+                        { title: "LinkedIn Thought Leadership Post", content: "Write a thought leadership post for LinkedIn.\n\n- **Hook:** Start with a strong, slightly controversial statement (e.g., 'Most people get [Topic] wrong.')\n- **Personal Story/Anecdote:** [Tell a short story (1-2 paragraphs) that illustrates your point.]\n- **The Insight:** [Provide your unique perspective or solution.]\n- **The 'Why':** Explain why this insight is valuable to your network.\n- **Call to Action:** Ask a question to encourage discussion (e.g., 'What's your take on this?')\n- **Hashtags:** #[Leadership] #[YourIndustry] #[PersonalBranding]" },
+                        { title: "Instagram Carousel (5 Slides)", content: "Write the text for a 5-slide Instagram carousel about '[Your Topic]'.\n\n- **Slide 1 (Cover):** [Catchy Title] (e.g., '5 Mistakes You're Making in [Topic]')\n- **Slide 2 (Point 1):** [Mistake/Point 1] + [Brief explanation]\n- **Slide 3 (Point 2):** [Mistake/Point 2] + [Brief explanation]\n- **Slide 4 (Point 3):** [Mistake/Point 3] + [Brief explanation]\n- **Slide 5 (CTA):** [Summary] + 'Save this post for later and follow me for more tips!'\n\n- **Caption:** [Write a longer caption that elaborates on the carousel points.]\n- **Hashtags:** #[InstagramTips] #[YourNiche]" },
+                        { title: "Viral Twitter Thread (3 Tweets)", content: "Write a 3-tweet thread designed to go viral.\n\n- **Tweet 1 (Hook):** [Start with a shocking fact, a big promise, or a common myth.] (e.g., 'I generated [Result] in [Timeframe]. Here's the exact 3-step process. A thread: 🧵')\n- **Tweet 2 (Value):** [Step 1] & [Step 2]. [Provide the core, actionable advice. Make it concise.]\n- **Tweet 3 (Value + CTA):** [Step 3]. [Final advice] + 'If you found this useful, 1) Follow me @[YourHandle] for more, and 2) RT the first tweet to help others.'\n- **Hashtags:** (Add 2-3 relevant hashtags to the first or last tweet)" },
+                        { title: "Company Announcement Post", content: "Write a professional social media post announcing [Your News, e.g., new product, funding, partnership].\n\n- **The News:** 'We're thrilled to announce [The News]! 🚀'\n- **The Impact:** 'This means [Benefit for customers/community].'\n- **The Gratitude:** 'A huge thank you to [Our Team / Our Customers / Our Partners] for making this possible.'\n- **The Future:** 'We can't wait to [What's next].'\n- **Link:** 'Learn more at [Link].'\n- **Hashtags:** #[Announcement] #[YourCompany] #[YourIndustry]" },
+                        { title: "Before & After Post", content: "Write a 'Before & After' post to showcase a transformation (e.g., fitness, design, business results).\n\n- **The 'Before':** 'I used to struggle with [The Problem].'\n- **The 'After':** 'Now, [The Positive Outcome].'\n- **The Process:** 'The change didn't happen overnight. The key was [The 1-2 things you did].'\n- **The CTA:** 'Want to achieve similar results? [e.g., DM me, check link in bio, etc.]'\n- **Hashtags:** #[Transformation] #[BeforeAndAfter] #[YourNiche]" }
+                    ]
+                },
+                "YouTube Script": {
+                    "basic": [ /* Add Basic YT Templates Here */],
+                    "pro": [ /* Add Pro YT Templates Here */]
+                },
+                "Film Making Script": {
+                    "basic": [ /* Add Basic Film Templates Here */],
+                    "pro": [ /* Add Pro Film Templates Here */]
+                },
+                "Email Newsletter": {
+                    "basic": [ /* Add Basic Email Templates Here */],
+                    "pro": [ /* Add Pro Email Templates Here */]
+                },
+                "Marketing Copy": {
+                    "basic": [ /* Add Basic Marketing Templates Here */],
+                    "pro": [ /* Add Pro Marketing Templates Here */]
+                },
+                "Other": {
+                    "basic": [ /* Add Basic Other Templates Here */],
+                    "pro": [ /* Add Pro Other Templates Here */]
+                }
+            };
+
+            // --- Fill in missing templates (Example) ---
+            const placeholderTemplate = { title: "Placeholder Template", content: "Write content about [Your Topic]..." };
+            ["YouTube Script", "Film Making Script", "Email Newsletter", "Marketing Copy", "Other"].forEach(cat => {
+                if (!allTemplates[cat]) allTemplates[cat] = { basic: [], pro: [] }; // Ensure category exists
+                if (allTemplates[cat].basic.length === 0) allTemplates[cat].basic.push(placeholderTemplate);
+                if (allTemplates[cat].pro.length === 0) allTemplates[cat].pro.push(placeholderTemplate);
+            });
+            // --- End Template Filling ---
+
+            function populateTemplates(category, plan) {
+                if (!templateListContainer) return;
+                templateListContainer.innerHTML = '';
+                const categoryTemplates = allTemplates[category] || allTemplates["Other"];
+
+                // --- All templates are now free ---
+                const isPro = true;
+
+                // Basic Templates
+                const basicSection = document.createElement('div');
+                basicSection.innerHTML = '<h3 class="text-xl font-semibold text-white mb-3 border-b border-gray-700 pb-1">Basic Templates</h3>';
+                const basicGrid = document.createElement('div');
+                basicGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+                categoryTemplates.basic.forEach(template => {
+                    const item = document.createElement('div');
+                    item.className = 'template-item';
+                    item.innerHTML = `<h4 class="font-semibold text-white">${template.title}</h4>`;
+                    item.addEventListener('click', () => {
+                        userIdeaTextarea.value = template.content;
+                        closeTemplateModal();
+                    });
+                    basicGrid.appendChild(item);
+                });
+                basicSection.appendChild(basicGrid);
+                templateListContainer.appendChild(basicSection);
+
+                // Pro Templates (Now free)
+                const proSection = document.createElement('div');
+                proSection.innerHTML = '<h3 class="text-xl font-semibold text-white mb-3 mt-6 border-b border-gray-700 pb-1">Advanced Templates ✨</h3>';
+                const proGrid = document.createElement('div');
+                proGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+                categoryTemplates.pro.forEach(template => {
+                    const item = document.createElement('div');
+                    item.className = 'template-item pro'; // Keep class for styling, but remove badge
+                    item.innerHTML = `
+                        <h4 class="font-semibold text-white">${template.title}</h4>
+                        <!-- PRO Badge Removed -->
+                    `;
+
+                    // --- Simplified logic: All templates are always enabled ---
+                    item.classList.remove('disabled-feature'); // Always enable
+                    item.addEventListener('click', () => {
+                        userIdeaTextarea.value = template.content;
+                        closeTemplateModal();
+                    });
+                    proGrid.appendChild(item);
+                });
+                proSection.appendChild(proGrid);
+                templateListContainer.appendChild(proSection);
+            }
+
+            const openTemplateModal = () => {
+                if (!templateModal) return;
+                const selectedCategory = contentTypeSelect ? contentTypeSelect.value : "Other";
+                if (templateModalTitle) templateModalTitle.textContent = `Browse ${selectedCategory} Templates`;
+                // Get current plan status from the Firebase script via window object
+                const currentPlan = typeof window.getCurrentUserPlan === 'function' ? window.getCurrentUserPlan() : null;
+                populateTemplates(selectedCategory, currentPlan); // Pass plan status
+                templateModal.classList.remove('hidden');
+            }
+            const closeTemplateModal = () => templateModal?.classList.add('hidden');
+            if (openTemplateModalBtn) openTemplateModalBtn.addEventListener('click', openTemplateModal);
+            if (closeTemplateModalBtn) closeTemplateModalBtn.addEventListener('click', closeTemplateModal);
+
+            // --- AI Content Generation (existing logic) ---
+            // Helper function for API calls with backoff
+            async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        if (response.status === 429 && retries > 0) { // Rate limit
+                            console.log(`Rate limited. Retrying in ${delay}ms... (${retries} retries left)`);
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                        }
+                        let errorBody = "Unknown API error";
+                        try {
+                            const errorJson = await response.json();
+                            errorBody = errorJson.error?.message || JSON.stringify(errorJson);
+                        } catch (e) { errorBody = await response.text() || response.statusText; }
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errorBody}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error("Fetch error:", error.message);
+                    // Retry on network errors or specific non-rate-limit server errors
+                    if (retries > 0 && (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.startsWith('HTTP error! status: 5'))) {
+                        console.log(`Network/Server error. Retrying in ${delay}ms... (${retries} retries left)`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                    }
+                    throw error; // Re-throw other errors (like 4xx client errors)
+                }
+            }
+
+            // Form submission logic
+            const aiContentForm = document.getElementById('aiContentForm');
+            const generatedContentWrapper = document.getElementById('generatedContentWrapper');
+            const generatedContentOutput = document.getElementById('generatedContentOutput');
+            const generationStatus = document.getElementById('generationStatus');
+            const copyContentBtn = document.getElementById('copyContentBtn');
+            const submitButton = aiContentForm ? aiContentForm.querySelector('button[type="submit"]') : null;
+            const originalButtonText = submitButton ? submitButton.innerHTML : 'Generate Content Now';
+
+            if (aiContentForm && submitButton && generatedContentWrapper && generationStatus && generatedContentOutput) {
+                aiContentForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    // Check if button is disabled (i.e., user not logged in)
+                    if (submitButton.disabled) {
+                        const loginPrompt = document.getElementById('loginToGeneratePrompt');
+                        if (loginPrompt) loginPrompt.classList.remove('hidden'); // Ensure prompt is visible
+                        return; // Stop submission
+                    }
+
+                    const contentType = document.getElementById('contentType').value;
+                    const userIdea = document.getElementById('userIdea').value;
+                    const tone = document.getElementById('tone').value;
+                    const seoKeywords = document.getElementById('seoKeywords').value;
+
+                    if (!userIdea.trim()) {
+                        // ... (validation remains the same) ...
+                        const ideaTextarea = document.getElementById('userIdea');
+                        ideaTextarea.classList.add('ring-2', 'ring-red-500');
+                        ideaTextarea.placeholder = 'Please enter an idea to get started!';
+                        setTimeout(() => {
+                            ideaTextarea.classList.remove('ring-2', 'ring-red-500');
+                            ideaTextarea.placeholder = "e.g., 'A 5-step guide to digital marketing for beginners...'";
+                        }, 3000);
+                        return;
+                    }
+
+                    // --- Start Generation ---
+                    submitButton.innerHTML = 'Generating...';
+                    submitButton.disabled = true;
+                    generatedContentWrapper.classList.remove('hidden');
+                    generationStatus.className = 'text-center p-4 text-gray-400'; // Reset color
+                    generationStatus.textContent = 'Generating, please wait... This might take a moment.'; // Updated message
+                    generationStatus.classList.remove('hidden');
+                    generatedContentOutput.innerHTML = '';
+                    rawGeneratedText = '';
+
+                    // --- API Call ---
+                    const apiUrl = "http://localhost:3001/api/generate"; // Your backend proxy
+
+                    let systemPrompt = "You are an expert content creator named AICraft Writer. Generate high-quality, engaging content based on the user's request. Match the tone and style appropriate for the selected content type. **Format your entire response using Markdown.** Use headings (## for main sections, ### for sub-sections), bullet points (* or -), numbered lists (1., 2.), and **bold text** to structure the content clearly. **Incorporate relevant emojis** where appropriate (like ✨, 🚀,💡). Do not include any pre-amble (like 'Here is the content...') or post-amble (like 'I hope this helps...'), just the markdown-formatted content itself.";
+                    let userQuery = `Create a "${contentType}" about the following topic: "${userIdea}"`;
+
+                    // --- Advanced options are now free, so this check always runs ---
+                    const isProUser = true;
+                    // Add tone and keywords if provided (logic remains the same)
+                    if (isProUser) { // Although isProUser is always true now
+                        if (tone && tone !== 'Default') { userQuery += `\n\n**Tone Requirement:** Write in a ${tone} tone.`; }
+                        if (seoKeywords && seoKeywords.trim() !== '') { userQuery += `\n\n**SEO Requirement:** Naturally incorporate keywords like: "${seoKeywords}" where relevant.`; }
+                    }
+
+                    // Construct the OpenRouter/OpenAI compatible payload
+                    const payload = {
+                        model: "mistralai/mistral-7b-instruct:free", // Or your preferred OpenRouter model
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: userQuery }
+                        ]
+                        // Optional: Add other parameters like temperature, max_tokens if needed
+                        // temperature: 0.7,
+                        // max_tokens: 2048
+                    };
+
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                        const result = await response.json(); 
+
+                        console.log("API response:", result); // For debugging
+
+                        const text = result.choices?.[0]?.message?.content;
+
+                        if (text) {
+                            rawGeneratedText = text.trim();
+                            generatedContentOutput.innerHTML = marked.parse(rawGeneratedText);
+                            generationStatus.classList.add('hidden');
+                        } else {
+                            console.error("Unexpected API response structure:", result);
+                            let errorMessage = result.error?.message || 'API response did not contain text or had an unexpected structure.';
+                            if (result.choices?.[0]?.finish_reason && result.choices[0].finish_reason !== 'stop') {
+                                errorMessage += ` Finish Reason: ${result.choices[0].finish_reason}`;
+                            }
+                            throw new Error(errorMessage);
+                        }
+                    } catch (error) {
+                        console.error('Error during AI content generation:', error);
+                        rawGeneratedText = '';
+                        generationStatus.textContent = `An error occurred: ${error.message}. Please check your input or try again later.`;
+                        generationStatus.className = 'text-center p-4 text-red-400'; // Error color
+                    } finally {
+                        submitButton.innerHTML = originalButtonText;
+                        // Re-enable only if user is still logged in (check global var from other script)
+                        const isLoggedIn = typeof window.getCurrentUserPlan === 'function' && window.getCurrentUserPlan() !== null;
+                        if (isLoggedIn) {
+                            submitButton.disabled = false;
+                        } else {
+                            submitButton.disabled = true; // Keep disabled if logged out
+                        }
+                    }
+                });
+            }
+
+            // --- Copy Button (existing logic) ---
+            if (copyContentBtn) {
+                copyContentBtn.addEventListener('click', () => {
+                    const textToCopy = rawGeneratedText;
+                    if (!textToCopy) return;
+
+                    // Use Clipboard API if available (more modern)
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            const originalBtnText = copyContentBtn.textContent;
+                            copyContentBtn.textContent = 'Copied!';
+                            setTimeout(() => { copyContentBtn.textContent = originalBtnText; }, 2000);
+                        }).catch(err => {
+                            console.error('Async clipboard copy failed: ', err);
+                            // Fallback to execCommand
+                            copyUsingExecCommand(textToCopy);
+                        });
+                    } else {
+                        // Fallback for older browsers or insecure contexts
+                        copyUsingExecCommand(textToCopy);
+                    }
+                });
+            }
+
+            // Fallback copy function using execCommand
+            function copyUsingExecCommand(textToCopy) {
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                textArea.style.position = 'fixed'; // Prevent scrolling to bottom
+                textArea.style.top = '0';
+                textArea.style.left = '0';
+                textArea.style.width = '2em';
+                textArea.style.height = '2em';
+                textArea.style.padding = '0';
+                textArea.style.border = 'none';
+                textArea.style.outline = 'none';
+                textArea.style.boxShadow = 'none';
+                textArea.style.background = 'transparent';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    const originalBtnText = copyContentBtn.textContent;
+                    copyContentBtn.textContent = 'Copied!';
+                    setTimeout(() => { copyContentBtn.textContent = originalBtnText; }, 2000);
+                } catch (err) {
+                    console.error('Fallback execCommand copy failed: ', err);
+                    const originalBtnText = copyContentBtn.textContent;
+                    copyContentBtn.textContent = 'Failed!';
+                    setTimeout(() => { copyContentBtn.textContent = originalBtnText; }, 2000);
+                }
+                document.body.removeChild(textArea);
+            }
+
+
+            // --- Modal Escape/Overlay Close ---
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (demoModal && !demoModal.classList.contains('hidden')) closeDemoModal();
+                    if (templateModal && !templateModal.classList.contains('hidden')) closeTemplateModal();
+                    // Close policy modal on escape
+                    if (policyModal && policyModal.style.display === 'flex') closePolicyModal();
+                    // Close message modal on escape
+                    const msgModal = document.getElementById('messageModal'); // Get modal inside this scope
+                    if (msgModal && msgModal.getAttribute('aria-hidden') === 'false') {
+                        msgModal.setAttribute('aria-hidden', 'true');
+                    }
+                }
+            });
+            if (demoModal) demoModal.addEventListener('click', (e) => { if (e.target === demoModal) closeDemoModal(); });
+            if (templateModal) templateModal.addEventListener('click', (e) => { if (e.target === templateModal) closeTemplateModal(); });
+            // Close policy modal when clicking the overlay
+            if (policyModal) policyModal.addEventListener('click', (e) => {
+                if (e.target === policyModal) closePolicyModal();
+            });
+
+        }); // End DOMContentLoaded
+    </script>
+
+</body>
+
+</html>
