@@ -1743,7 +1743,7 @@
                     rawGeneratedText = '';
 
                     // --- API Call ---
-                    const apiUrl = "https://backend-1-jozo.onrender.com"; // Your backend proxy
+                    const apiUrl = "https://backend-1-jozo.onrender.com/api/generate"; // Your backend proxy
 
                     let systemPrompt = "You are an expert content creator named AICraft Writer. Generate high-quality, engaging content based on the user's request. Match the tone and style appropriate for the selected content type. **Format your entire response using Markdown.** Use headings (## for main sections, ### for sub-sections), bullet points (* or -), numbered lists (1., 2.), and **bold text** to structure the content clearly. **Incorporate relevant emojis** where appropriate (like ✨, 🚀,💡). Do not include any pre-amble (like 'Here is the content...') or post-amble (like 'I hope this helps...'), just the markdown-formatted content itself.";
                     let userQuery = `Create a "${contentType}" about the following topic: "${userIdea}"`;
@@ -1896,4 +1896,5 @@
 </body>
 
 </html>
+
 
